@@ -25,9 +25,9 @@ These paths are dynamically combined via a learned, token-wise gating mechanism,
 
 **Selective Copy:** MGA significantly outperforms the baseline on OOD generalization (Table 1, Figure 2).
 Baseline:
-<img width="613" alt="1 baseline_acc" src="https://github.com/user-attachments/assets/2cb009fc-689b-41fa-a863-fa4361c39f2b" /> 
+<img width="300" alt="1 baseline_acc" src="https://github.com/user-attachments/assets/2cb009fc-689b-41fa-a863-fa4361c39f2b" /> 
 MGA:
-<img width="617" alt="1 mga_acc" src="https://github.com/user-attachments/assets/143f6d1e-2c63-428f-9550-4db8fb23be5c" /> <img width="663" alt="1 visual" src="https://github.com/user-attachments/assets/246b9574-7d0c-48cd-8d8b-9cb167dbcc7b" />
+<img width="300" alt="1 mga_acc" src="https://github.com/user-attachments/assets/143f6d1e-2c63-428f-9550-4db8fb23be5c" /> <img width="663" alt="1 visual" src="https://github.com/user-attachments/assets/246b9574-7d0c-48cd-8d8b-9cb167dbcc7b" />
 
 
 
