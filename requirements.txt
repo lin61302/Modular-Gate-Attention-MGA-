@@ -1,0 +1,33 @@
+# requirements.txt
+
+# Note: Install the correct CUDA version if using GPU, e.g., via pytorch.org instructions
+# This line installs the CPU/base version by default via pip.
+torch==2.1.0
+
+# Hugging Face Libraries
+transformers==4.35.2
+datasets==2.15.0
+tokenizers>=0.14.1 # Often a dependency of transformers, pinning helps
+
+# Data Handling & Numerics
+numpy==1.24.3
+
+# Evaluation Metrics
+scikit-learn==1.3.0
+
+# Utilities
+tqdm==4.66.1
+matplotlib==3.7.2
+nltk==3.8.1
+
+# Dependencies often pulled in by the above libraries, 
+# pinning them explicitly can sometimes help avoid conflicts.
+# You can often omit these and let pip resolve them initially.
+# huggingface-hub>=0.17.0 
+# pyarrow>=10.0.0 # Often used by datasets
+# pandas>=1.5.0  # Often used by datasets/sklearn
+# packaging>=20.0
+# regex!=2019.12.17 # Dependency of tokenizers
+# requests>=2.20.0 
+# filelock>=3.8.0
+# fsspec[http]>=2023.5.0 # For datasets loading from hub
