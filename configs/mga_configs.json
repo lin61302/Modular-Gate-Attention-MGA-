@@ -1,0 +1,23 @@
+{
+    "d_model": 256,
+    "n_heads": 4,
+    "d_ff": 1024,
+    "n_layers": 6,
+    "dropout": 0.1,
+    "lr": 1e-4,
+    "epochs": 15,
+    "batch_size": 32,
+    "MAX_SEQ_LEN": 128,
+    "weight_decay": 0.01,
+    "warmup_proportion": 0.1,
+    "gradient_accumulation_steps": 1,
+    "max_grad_norm": 1.0,
+    "freeze_embeddings": false,
+    "MODEL_MAX_LEN": 512,
+    "local_window_size": 8,
+    "num_latents": 16,
+    "gru_hidden": 256,
+    "gate_hidden": 64,
+    "activation": "gelu",
+    "use_stable_local_norm": false
+}
