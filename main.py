@@ -6,106 +6,57 @@ import json
 import os
 import random
 import numpy as np
-from torch.utils.data import DataLoader, TensorDataset # Example dataset/loader
+from torch.utils.data import DataLoader, TensorDataset # Example, not used if loading scripts work
+import math # Added for math.ceil
+from typing import Tuple, Dict, Any, Optional # Added typing
 
-# Adjust path if necessary, assuming main.py is in repo/ and src/ is a sibling directory
-# If running from repo/, these imports should work directly.
+# --- Import Dataloader Functions ---
+from src.data.dataloader_selective_copy import get_selective_copy_dataloaders
+from src.data.dataloader_char_palindrome import get_char_palindrome_dataloaders
+from src.data.dataloader_wp_palindrome import get_wp_palindrome_dataloaders
+
+# --- Import Experiment Runner ---
+# Assuming main_runner.py is now in src/training/
 from src.training.main_runner import run_experiment
 
-# --- Placeholder Data Loading ---
-# IMPORTANT: Replace these with your actual data loading logic!
-# You'll need to load your specific datasets (train, val, test)
-# and return DataLoaders, vocab_size, and pad_idx.
+# --- Import Tokenizer if needed ---
+try:
+    from transformers import AutoTokenizer
+except ImportError:
+    print("Warning: transformers library not found. WordPiece task will fail.")
+    AutoTokenizer = None
 
-def load_datasets(data_path: str, batch_size: int, max_seq_len: int) -> Tuple[DataLoader, DataLoader, DataLoader, int, int]:
-    """
-    Placeholder function to load datasets.
-    Replace with your actual data loading logic.
-
-    Args:
-        data_path (str): Path to the dataset directory or files.
-        batch_size (int): Batch size for DataLoaders.
-        max_seq_len (int): Maximum sequence length for padding/truncation.
-
-    Returns:
-        Tuple containing:
-        - train_loader (DataLoader): DataLoader for the training set.
-        - val_loader (DataLoader): DataLoader for the validation set.
-        - test_loader (DataLoader): DataLoader for the test set.
-        - vocab_size (int): The size of the vocabulary.
-        - pad_idx (int): The index used for padding tokens.
-    """
-    print(f"--- Placeholder: Loading datasets from {data_path} ---")
-    print(f"--- Placeholder: Using Batch Size: {batch_size}, Max Seq Len: {max_seq_len} ---")
-
-    # --- Dummy Data Generation ---
-    # Replace this section with your actual data reading and tokenization
-    vocab_size = 1000  # Example vocab size
-    pad_idx = 0      # Example padding index
-    num_samples_train = 500
-    num_samples_val = 100
-    num_samples_test = 100
-    num_classes = 2 # Assuming binary classification, adjust if needed
-
-    def create_dummy_data(num_samples):
-        # Dummy input_ids (random ints up to vocab_size)
-        input_ids = torch.randint(1, vocab_size, (num_samples, max_seq_len))
-        # Dummy attention mask (mostly 1s, some 0s for padding simulation)
-        attention_mask = torch.ones((num_samples, max_seq_len), dtype=torch.long)
-        for i in range(num_samples): # Add some random padding
-             pad_len = random.randint(0, max_seq_len // 4)
-             if pad_len > 0:
-                 input_ids[i, -pad_len:] = pad_idx
-                 attention_mask[i, -pad_len:] = 0
-        # Dummy labels
-        labels = torch.randint(0, num_classes, (num_samples,))
-        return TensorDataset(input_ids, attention_mask, labels) # Format: (input_ids, attention_mask, labels)
-
-    train_dataset = create_dummy_data(num_samples_train)
-    val_dataset = create_dummy_data(num_samples_val)
-    test_dataset = create_dummy_data(num_samples_test)
-
-    # --- Create DataLoaders ---
-    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-    val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
-    test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
-
-    print(f"--- Placeholder: Returning Dummy DataLoaders (Train/Val/Test): {len(train_loader)}/{len(val_loader)}/{len(test_loader)} batches ---")
-    print(f"--- Placeholder: Vocab Size: {vocab_size}, Padding Index: {pad_idx} ---")
-
-    # IMPORTANT: Ensure the batch format matches what train_epoch/evaluate expect.
-    # The current dummy data creates batches of (input_ids, attention_mask, labels) tuples.
-    # Modify if your model/training loop expects dicts (e.g., {'input_ids': ..., 'attention_mask': ..., 'labels': ...})
-    return train_loader, val_loader, test_loader, vocab_size, pad_idx
-
+# --- Placeholder Embedding Loading ---
+# Keep this simple for now, focus is on dataloading logic
 def load_embeddings(embedding_path: str, d_model: int, vocab_size: int) -> Optional[torch.Tensor]:
     """
     Placeholder function to load pre-trained embeddings.
-    Replace with your actual embedding loading logic.
-
-    Args:
-        embedding_path (str): Path to the embedding file (e.g., .pt, .txt, .vec).
-        d_model (int): Expected embedding dimension.
-        vocab_size (int): Expected vocabulary size.
-
-    Returns:
-        Optional[torch.Tensor]: Tensor of shape (vocab_size, d_model) or None.
+    Replace with your actual embedding loading logic if needed externally.
+    For WP Palindrome, embeddings are loaded within TransformerModel usually.
     """
     if not embedding_path:
         return None
-    print(f"--- Placeholder: Loading embeddings from {embedding_path} ---")
-    # --- Dummy Embedding Generation ---
-    # Replace this with logic to load from file (GloVe, Word2Vec, FastText, etc.)
-    # Ensure the loaded tensor has shape (vocab_size, d_model)
-    print(f"--- Placeholder: Creating Dummy Embeddings ({vocab_size} x {d_model}) ---")
-    try:
-        embeddings = torch.randn(vocab_size, d_model)
-        print(f"--- Placeholder: Successfully created dummy embeddings ---")
-        return embeddings
-    except Exception as e:
-        print(f"Error creating/loading dummy embeddings: {e}")
-        return None
-# --- End Placeholder Data Loading ---
+    print(f"--- Placeholder: Attempting to load embeddings from {embedding_path} ---")
+    # Implement actual loading from file (e.g., .pt, .vec) matching vocab_size and d_model
+    # Example:
+    # if os.path.exists(embedding_path):
+    #     try:
+    #         embeddings = torch.load(embedding_path) # Adjust based on file type
+    #         if embeddings.shape == (vocab_size, d_model):
+    #              print(f"--- Placeholder: Successfully loaded embeddings ---")
+    #              return embeddings
+    #         else:
+    #              print(f"Warning: Embedding shape mismatch. Expected ({vocab_size}, {d_model}), got {embeddings.shape}")
+    #              return None
+    #     except Exception as e:
+    #         print(f"Error loading embeddings: {e}")
+    #         return None
+    # else:
+    #      print(f"Embedding path {embedding_path} not found.")
+    #      return None
+    print("--- Placeholder: No embedding loading implemented. Returning None. ---")
+    return None
+# --- End Placeholder Embedding Loading ---
 
 
 def main(args):
@@ -122,20 +73,48 @@ def main(args):
          print(f"Error: Could not decode JSON from {args.config_path}")
          return
 
-    # Override config with command-line arguments where applicable
+    # --- Merge/Override Config with Args ---
     config['seed'] = args.seed
-    config['model_type'] = args.model_type # Store model type in config for reference if needed
-    config['epochs'] = args.epochs if args.epochs is not None else config.get('epochs', 10) # Default epochs if not in args/config
+    config['model_type'] = args.model_type # Store model type in config
+    config['task'] = args.task # Store task in config
+    config['epochs'] = args.epochs if args.epochs is not None else config.get('epochs', 10)
     config['batch_size'] = args.batch_size if args.batch_size is not None else config.get('batch_size', 32)
     config['lr'] = args.lr if args.lr is not None else config.get('lr', 1e-4)
-    # Ensure essential MGA configs are present if model is MGA
+    # Use task-specific seq_len defaults if not overridden by args
+    if args.max_seq_len is None:
+        if args.task == 'selective_copy':
+            # Needs train/id/ood lengths, handle inside dataloader or pass explicitly?
+            # For now, main.py only needs one max length for pos encoding buffer.
+            # We'll use the OOD length from the notebook config as the max needed.
+            config['MAX_SEQ_LEN'] = config.get('seq_len_eval_ood', 200)
+        elif args.task == 'char_palindrome':
+            config['MAX_SEQ_LEN'] = config.get('MAX_SEQ_LEN', 64)
+        elif args.task == 'wp_palindrome':
+            config['MAX_SEQ_LEN'] = config.get('MAX_SEQ_LEN', 512)
+        else:
+             config['MAX_SEQ_LEN'] = config.get('MAX_SEQ_LEN', 128) # Default fallback
+    else:
+         config['MAX_SEQ_LEN'] = args.max_seq_len # Override with arg
+
+    # Ensure MODEL_MAX_LEN (for pos encoding) is sufficient
+    config['MODEL_MAX_LEN'] = config.get('MODEL_MAX_LEN', config['MAX_SEQ_LEN'] + 20) # Add buffer
+
+    # Ensure MGA configs are present if needed
     if args.model_type.upper() == "MGA":
-         required_mga_keys = {"local_window_size", "num_latents", "gru_hidden", "gate_hidden"}
+         required_mga_keys = {"local_window_size", "num_latents", "gru_hidden", "gate_hidden"} # Base keys
+         if args.task == 'wp_palindrome':
+             required_mga_keys.add("local_kernel_size") # Add kernel size if WP task
+             required_mga_keys.discard("local_window_size") # Remove window size if WP task
+         elif args.task in ['selective_copy', 'char_palindrome']:
+             required_mga_keys.add("local_window_size")
+             # No kernel size needed for these tasks in the notebook
+
          if not required_mga_keys.issubset(config.keys()):
-              print(f"Error: MGA model selected, but config is missing required keys: {required_mga_keys - config.keys()}")
+              print(f"Error: MGA model selected for task {args.task}, but config is missing required keys: {required_mga_keys - set(config.keys())}")
               return
-    # Update sequence length from args if provided, else use config
-    config['MAX_SEQ_LEN'] = args.max_seq_len if args.max_seq_len is not None else config.get('MAX_SEQ_LEN', 128)
+         # Add optional MGA configs if present in main config
+         config['activation'] = config.get('activation', 'gelu') # Default in MGA layer is gelu/relu based on task
+         config['use_stable_local_norm'] = config.get('use_stable_local_norm', False)
 
     # --- Device Setup ---
     if args.device == 'cuda' and torch.cuda.is_available():
@@ -156,62 +135,94 @@ def main(args):
         torch.cuda.manual_seed_all(args.seed)
 
     # --- Data Loading ---
-    # IMPORTANT: Replace load_datasets call with your actual implementation
-    train_loader, val_loader, test_loader, vocab_size, pad_idx = load_datasets(
-        args.data_path,
-        config['batch_size'],
-        config['MAX_SEQ_LEN']
-    )
-    datasets = (train_loader, val_loader, test_loader)
+    print(f"--- Loading data for task: {args.task} ---")
+    pretrained_embeddings = None # Default to None
+    vocab_size = None
+    pad_idx = None
+    tokenizer_obj = None # For WP task
 
-    # --- Embeddings ---
-    # IMPORTANT: Replace load_embeddings call if using pre-trained embeddings
-    pretrained_embeddings = load_embeddings(
-        args.embedding_path,
-        config['d_model'], # Assumes d_model is in config
-        vocab_size
-    )
-    if pretrained_embeddings is not None:
-        print("Loaded pre-trained embeddings.")
-        # Optional: Check embedding shape consistency
-        if pretrained_embeddings.shape[0] != vocab_size or pretrained_embeddings.shape[1] != config['d_model']:
-            print(f"Warning: Loaded embedding shape {pretrained_embeddings.shape} "
-                  f"does not match vocab_size {vocab_size} and d_model {config['d_model']}. Check consistency.")
-            # Decide how to handle mismatch (e.g., exit, resize, ignore)
-            # For now, we proceed, but TransformerModel will also warn/potentially error.
+    if args.task == 'selective_copy':
+        train_loader, val_loader, test_loader, vocab_size, pad_idx = get_selective_copy_dataloaders(config)
+        # Note: val_loader is ID, test_loader is OOD for this task based on script logic
+        print("Selective Copy DataLoaders loaded.")
+    elif args.task == 'char_palindrome':
+        train_loader, val_loader, test_loader, vocab_size, pad_idx = get_char_palindrome_dataloaders(config)
+        print("Character Palindrome DataLoaders loaded.")
+    elif args.task == 'wp_palindrome':
+        if AutoTokenizer is None:
+            print("Error: Transformers library needed for wp_palindrome task.")
+            return
+        try:
+            model_name_for_tokenizer = config.get("MODEL_NAME", "bert-base-uncased") # Get from config or default
+            print(f"Loading tokenizer for WP Palindrome: {model_name_for_tokenizer}")
+            tokenizer_obj = AutoTokenizer.from_pretrained(model_name_for_tokenizer)
+            train_loader, val_loader, test_loader, vocab_size, pad_idx = get_wp_palindrome_dataloaders(config, tokenizer_obj)
+            print("WordPiece Palindrome DataLoaders loaded.")
+            # Load pre-trained embeddings if specified (or handle inside model)
+            if args.embedding_path: # Explicit path overrides default logic
+                 pretrained_embeddings = load_embeddings(
+                     args.embedding_path,
+                     config['d_model'],
+                     vocab_size
+                 )
+            else:
+                 # Load default BERT embeddings to pass to model
+                  print("Loading default pre-trained embeddings for WP Palindrome task...")
+                  try:
+                      bert_model = AutoModel.from_pretrained(model_name_for_tokenizer)
+                      pretrained_embeddings = bert_model.embeddings.word_embeddings.weight.clone().detach()
+                      if pretrained_embeddings.shape[0] != vocab_size or pretrained_embeddings.shape[1] != config['d_model']:
+                           print(f"Warning: Loaded embedding shape {pretrained_embeddings.shape} does not match tokenizer vocab {vocab_size} and d_model {config['d_model']}.")
+                           pretrained_embeddings = None # Don't use mismatched embeddings
+                      else:
+                           print("Successfully loaded default embeddings.")
+                      del bert_model # Free memory
+                  except Exception as e:
+                       print(f"Could not load default embeddings: {e}. Proceeding without pre-trained embeddings.")
+                       pretrained_embeddings = None
+
+        except Exception as e:
+            print(f"Error loading data for wp_palindrome: {e}")
+            return
+    else:
+        print(f"Error: Unknown task '{args.task}'")
+        return
+
+    datasets = (train_loader, val_loader, test_loader)
 
     # --- Output Directory ---
     os.makedirs(args.output_dir, exist_ok=True)
     print(f"Output will be saved to: {args.output_dir}")
 
     # --- Run Experiment ---
+    # Pass vocab_size and pad_idx explicitly to the runner
     results = run_experiment(
         model_type=args.model_type,
         config=config,
         datasets=datasets,
         device=device,
         seed=args.seed,
-        pretrained_embeddings=pretrained_embeddings,
-        vocab_size=vocab_size,
-        pad_idx=pad_idx,
-        num_classes=args.num_classes,
+        pretrained_embeddings=pretrained_embeddings, # Pass loaded embeddings (can be None)
+        vocab_size=vocab_size, # Pass determined vocab size
+        pad_idx=pad_idx,       # Pass determined pad index
+        num_classes=args.num_classes, # Use arg for num_classes (default 2)
         model_checkpoint_path=args.checkpoint_path,
         eval_only=args.eval_only
     )
 
     # --- Save Results ---
-    results_filename = f"results_{args.model_type}_seed{args.seed}.json"
+    results_filename = f"results_{args.task}_{args.model_type}_seed{args.seed}.json"
     results_path = os.path.join(args.output_dir, results_filename)
     print(f"Saving results to {results_path}")
     try:
-        # Convert numpy arrays (like gate weights) to lists for JSON serialization
+        # Convert numpy arrays/tensors to lists for JSON serialization
         serializable_results = {}
         for key, value in results.items():
             if isinstance(value, np.ndarray):
                 serializable_results[key] = value.tolist()
             elif isinstance(value, list) and value and isinstance(value[0], np.ndarray):
                  serializable_results[key] = [arr.tolist() for arr in value]
-            elif isinstance(value, (torch.Tensor)): # Convert potential tensor outputs
+            elif isinstance(value, (torch.Tensor)):
                  serializable_results[key] = value.cpu().numpy().tolist()
             else:
                 serializable_results[key] = value
@@ -227,13 +238,19 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run MGA or Baseline Transformer Experiment")
 
+    # Task Selection
+    parser.add_argument("--task", type=str, required=True,
+                        choices=["selective_copy", "char_palindrome", "wp_palindrome"],
+                        help="Task to run.")
+
     # Required arguments
     parser.add_argument("--model-type", type=str, required=True, choices=["MGA", "Baseline"],
                         help="Type of model to run ('MGA' or 'Baseline').")
     parser.add_argument("--config-path", type=str, required=True,
                         help="Path to the JSON configuration file for model hyperparameters.")
-    parser.add_argument("--data-path", type=str, required=True,
-                        help="Path to the dataset (specific format depends on load_datasets function).")
+    # Data path is now optional, as HF datasets might be loaded directly
+    parser.add_argument("--data-path", type=str, default=None,
+                        help="Path to the dataset (required for non-HF tasks).")
     parser.add_argument("--output-dir", type=str, required=True,
                         help="Directory to save results and potential checkpoints.")
 
@@ -244,16 +261,16 @@ if __name__ == "__main__":
                         help="Random seed for reproducibility. Default: 42.")
     parser.add_argument("--num-classes", type=int, default=2,
                         help="Number of output classes for classification. Default: 2.")
-    parser.add_argument("--epochs", type=int, default=None, # Default handled in main()
+    parser.add_argument("--epochs", type=int, default=None,
                         help="Number of training epochs (overrides config if set).")
-    parser.add_argument("--batch-size", type=int, default=None, # Default handled in main()
+    parser.add_argument("--batch-size", type=int, default=None,
                         help="Batch size (overrides config if set).")
-    parser.add_argument("--lr", type=float, default=None, # Default handled in main()
+    parser.add_argument("--lr", type=float, default=None,
                          help="Peak learning rate (overrides config if set).")
-    parser.add_argument("--max-seq-len", type=int, default=None, # Default handled in main()
-                        help="Maximum sequence length (overrides config if set).")
+    parser.add_argument("--max-seq-len", type=int, default=None,
+                        help="Maximum sequence length (overrides relevant config value if set).")
     parser.add_argument("--embedding-path", type=str, default=None,
-                        help="Path to pre-trained embedding file (optional).")
+                        help="Path to explicitly load pre-trained embedding file (optional, might override defaults).")
     parser.add_argument("--checkpoint-path", type=str, default=None,
                         help="Path to a model checkpoint (.pt file) to load for evaluation or resuming.")
     parser.add_argument("--eval-only", action="store_true",
@@ -261,10 +278,16 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    # Validate data path for non-HF tasks
+    if args.task in ['selective_copy', 'char_palindrome'] and not args.data_path:
+         parser.error(f"--data-path is required for task '{args.task}'")
+
     # Validate eval_only requirement
     if args.eval_only and not args.checkpoint_path:
         print("Warning: --eval-only flag is set, but --checkpoint-path is not provided. Evaluating a randomly initialized model.")
-        # Alternatively, could raise an error:
-        # parser.error("--eval-only requires --checkpoint-path to be set.")
+
+    # Ensure transformers library is available if wp_palindrome is selected
+    if args.task == 'wp_palindrome' and AutoTokenizer is None:
+         parser.error("The 'transformers' library is required for the 'wp_palindrome' task. Please install it.")
 
     main(args)
