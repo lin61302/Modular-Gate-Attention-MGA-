@@ -17,7 +17,8 @@ These paths are dynamically combined via a learned, token-wise gating mechanism,
 
 
 
-<img width="718" alt="Screenshot 2025-04-12 at 5 53 52 AM" src="https://github.com/user-attachments/assets/7f9cd5bf-4717-41ba-9d04-b703f6cf4659" />
+<img width="1500" alt="Screenshot 2025-04-12 at 6 00 29 AM" src="https://github.com/user-attachments/assets/39074694-ea89-4c37-b003-70851285f6ab" />
+
 
 
 ## Results
