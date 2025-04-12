@@ -2,6 +2,27 @@
 
 This repository contains the official PyTorch implementation for the paper: **"Modular Gated Attention: Adaptive Architecture for Flexible Sequence Modeling"** by Zung-Ru Lin (University of Pennsylvania).
 
+repo/
+├── src/
+│   ├── data/
+│   │   ├── dataloader_selective_copy.py
+│   │   ├── dataloader_char_palindrome.py
+│   │   └── dataloader_wp_palindrome.py
+│   ├── models/
+│   │   ├── baseline.py
+│   │   ├── main_model.py
+│   │   └── modules.py  # Renamed from mga_layer.py based on notebook? Check this.
+│   ├── training/
+│   │   ├── main_runner.py # Moved here based on notebook imports
+│   │   └── train_loop.py
+│   └── utils/
+│       └── helpers.py
+└── main.py
+└── configs/
+    ├── baseline_config.json
+    └── mga_config.json
+    
+
 ## Overview
 
 Standard Transformers, despite their success, face limitations in efficiency for long sequences and lack inherent inductive biases like locality or recurrence. Modular Gated Attention (MGA) addresses this by introducing a novel architecture incorporating three parallel computational paths per layer:
@@ -13,8 +34,19 @@ Standard Transformers, despite their success, face limitations in efficiency for
 These paths are dynamically combined via a learned, token-wise gating mechanism, allowing the model to adapt its processing strategy based on context and task demands. This repository provides the code to reproduce the experiments presented in the paper on synthetic benchmarks (Selective Copy, Character Palindrome) and a semi-realistic task (Noisy WordPiece Palindrome).
 
 
+
+
 <img width="1000" alt="Screenshot 2025-04-12 at 5 45 16 AM" src="https://github.com/user-attachments/assets/ab7bc127-798b-4665-80bb-6ada24b912db" />
 
+
+> # Example: Run MGA on Character Palindrome
+> python main.py --task char_palindrome --model-type MGA --config-path configs/mga_config.json --output-dir results/char_pal_mga --seed 42
+> 
+> # Example: Run Baseline on Selective Copy
+> python main.py --task selective_copy --model-type Baseline --config-path configs/baseline_config.json --output-dir results/sel_copy_base --seed 43
+> 
+> # Example: Run MGA on WordPiece Palindrome (requires transformers)
+> python main.py --task wp_palindrome --model-type MGA --config-path configs/mga_config.json --output-dir results/wp_pal_mga --seed 44
 
 
 <img width="1500" alt="Screenshot 2025-04-12 at 6 00 29 AM" src="https://github.com/user-attachments/assets/39074694-ea89-4c37-b003-70851285f6ab" />
