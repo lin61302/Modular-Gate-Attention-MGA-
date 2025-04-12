@@ -1,26 +1,6 @@
 # Modular Gated Attention: Adaptive Architecture for Flexible Sequence Modeling
 
 This repository contains the official PyTorch implementation for the paper: **"Modular Gated Attention: Adaptive Architecture for Flexible Sequence Modeling"** by Zung-Ru Lin (University of Pennsylvania).
-
-repo/
-├── src/
-│   ├── data/
-│   │   ├── dataloader_selective_copy.py
-│   │   ├── dataloader_char_palindrome.py
-│   │   └── dataloader_wp_palindrome.py
-│   ├── models/
-│   │   ├── baseline.py
-│   │   ├── main_model.py
-│   │   └── modules.py  # Renamed from mga_layer.py based on notebook? Check this.
-│   ├── training/
-│   │   ├── main_runner.py # Moved here based on notebook imports
-│   │   └── train_loop.py
-│   └── utils/
-│       └── helpers.py
-└── main.py
-└── configs/
-    ├── baseline_config.json
-    └── mga_config.json
     
 
 ## Overview
