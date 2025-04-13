@@ -52,7 +52,7 @@ MGA:
 
 Baseline:                                                            
 
-<img width="650" alt="2 baseline_acc" src="https://github.com/user-attachments/assets/dffbb65e-872b-4ba4-a146-f9306a12b340" /> 
+<img width="599" alt="2 baseline_acc_cropped" src="https://github.com/user-attachments/assets/275daf83-0e96-49b0-b0c2-efe0a7c2ed54" />
 
 MGA:
   
