@@ -39,11 +39,11 @@ These paths are dynamically combined via a learned, token-wise gating mechanism,
 
 Baseline:                                                                     
 
-<img width="310" alt="1 baseline_acc" src="https://github.com/user-attachments/assets/2cb009fc-689b-41fa-a863-fa4361c39f2b" /> 
+<img width="650" alt="1 baseline_acc" src="https://github.com/user-attachments/assets/2cb009fc-689b-41fa-a863-fa4361c39f2b" /> 
 
 MGA:
 
-<img width="310" alt="1 mga_acc" src="https://github.com/user-attachments/assets/143f6d1e-2c63-428f-9550-4db8fb23be5c" /> <img width="663" alt="1 visual" src="https://github.com/user-attachments/assets/246b9574-7d0c-48cd-8d8b-9cb167dbcc7b" />
+<img width="650" alt="1 mga_acc" src="https://github.com/user-attachments/assets/143f6d1e-2c63-428f-9550-4db8fb23be5c" /> <img width="663" alt="1 visual" src="https://github.com/user-attachments/assets/246b9574-7d0c-48cd-8d8b-9cb167dbcc7b" />
 
 
 
@@ -52,11 +52,11 @@ MGA:
 
 Baseline:                                                            
 
-<img width="310" alt="2 baseline_acc" src="https://github.com/user-attachments/assets/dffbb65e-872b-4ba4-a146-f9306a12b340" /> 
+<img width="650" alt="2 baseline_acc" src="https://github.com/user-attachments/assets/dffbb65e-872b-4ba4-a146-f9306a12b340" /> 
 
 MGA:
   
-<img width="310" alt="2 mga_acc" src="https://github.com/user-attachments/assets/66a091ea-0e75-4ea2-8a21-77fac1613bc9" /> <img width="672" alt="2 visual-1" src="https://github.com/user-attachments/assets/c7620bfb-78ae-4fcf-b554-3b9c5a4d2ebb" />
+<img width="650" alt="2 mga_acc" src="https://github.com/user-attachments/assets/66a091ea-0e75-4ea2-8a21-77fac1613bc9" /> <img width="672" alt="2 visual-1" src="https://github.com/user-attachments/assets/c7620bfb-78ae-4fcf-b554-3b9c5a4d2ebb" />
 
 
 
@@ -66,11 +66,11 @@ MGA:
 
 Baseline:      
 
-<img width="310" alt="3 baseline_acc" src="https://github.com/user-attachments/assets/c3de7274-6288-493d-821b-a24080f0c6df" />
+<img width="650" alt="3 baseline_acc" src="https://github.com/user-attachments/assets/c3de7274-6288-493d-821b-a24080f0c6df" />
 
 MGA:
 
-<img width="310" alt="3 mga_acc" src="https://github.com/user-attachments/assets/0f7562f7-9021-4be5-b662-4ef5bf8175e2" />
+<img width="650" alt="3 mga_acc" src="https://github.com/user-attachments/assets/0f7562f7-9021-4be5-b662-4ef5bf8175e2" />
 <img width="657" alt="3 visual-1" src="https://github.com/user-attachments/assets/33d17b9b-62be-456b-8bbc-ca018445cdb6" />
 
 
