@@ -22,8 +22,16 @@ from src.training.main_runner import run_experiment
 try:
     from transformers import AutoTokenizer
 except ImportError:
-    print("Warning: transformers library not found. WordPiece task will fail.")
+    print("Warning: transformers library not found. WordPiece task will likely fail.")
     AutoTokenizer = None
+
+try: 
+    from transformers import AutoModel
+except ImportError:
+    print("Warning: transformers library not found. WordPiece task will likely fail.")
+    AutoModel = None
+    
+
 
 # --- Placeholder Embedding Loading ---
 # Keep this simple for now, focus is on dataloading logic
