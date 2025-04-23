@@ -19,5 +19,7 @@
     "gru_hidden": 256,
     "gate_hidden": 64,
     "activation": "gelu",
-    "use_stable_local_norm": false
+    "use_stable_local_norm": false,
+    "n_train_samples": 10000,
+    "n_eval_samples": 10000,
 }
