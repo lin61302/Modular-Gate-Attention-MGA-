@@ -13,5 +13,7 @@
     "gradient_accumulation_steps": 1,
     "max_grad_norm": 1.0,
     "freeze_embeddings": false,
-    "MODEL_MAX_LEN": 512
+    "MODEL_MAX_LEN": 512,
+    "n_train_samples": 10000,
+    "n_eval_samples": 10000,
 }
