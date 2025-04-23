@@ -5,7 +5,7 @@ import math
 from typing import Optional, Dict, Any
 
 # Assuming these imports point to your file structure
-from src.models.mga_layer import MGALayer
+from src.models.modules import MGALayer
 from src.models.baseline import TransformerLayer
 from src.utils.helpers import PositionalEncoding
 
