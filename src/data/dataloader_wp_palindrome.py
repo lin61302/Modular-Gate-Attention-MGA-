@@ -7,7 +7,7 @@ import numpy as np
 import random
 import math
 from typing import List, Tuple, Dict, Any
-from transformers import PreTrainedTokenizerBase, DataCollatorWithPadding
+from transformers import PreTrainedTokenizerBase, DataCollatorWithPadding, AutoModel
 
 # --- Data Generation ---
 def generate_wp_palindrome_sequence(config: Dict[str, Any], tokenizer: PreTrainedTokenizerBase) -> Tuple[List[str], int]:
