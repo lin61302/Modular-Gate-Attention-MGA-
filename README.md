@@ -3,6 +3,28 @@
 This repository contains the official PyTorch implementation for the paper: **"Modular Gated Attention: Adaptive Architecture for Flexible Sequence Modeling"** by Zung-Ru Lin (University of Pennsylvania).
     
 
+## Installation
+
+Install the core dependencies before running any experiments or tests:
+
+```bash
+pip install -r requirements.txt
+```
+
+For development and running the unit tests you will also need the optional dev requirements:
+
+```bash
+pip install -r requirements-dev.txt
+```
+
+### Running Tests
+
+After installing the dev requirements, run the test suite with:
+
+```bash
+pytest
+```
+
 ## Overview
 
 Standard Transformers, despite their success, face limitations in efficiency for long sequences and lack inherent inductive biases like locality or recurrence. Modular Gated Attention (MGA) addresses this by introducing a novel architecture incorporating three parallel computational paths per layer:
