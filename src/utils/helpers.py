@@ -23,7 +23,10 @@ class PositionalEncoding(nn.Module):
 
     def forward(self, input_ids: torch.Tensor) -> torch.Tensor:
         """
-        Adds positional embeddings to the input.
+        Return positional embeddings for the input sequence length. The input is
+        not modified; instead, a tensor containing the learned positional
+        embeddings is returned for the caller to combine with the input as
+        needed.
 
         Args:
             input_ids (torch.Tensor): Input token IDs to determine sequence length
