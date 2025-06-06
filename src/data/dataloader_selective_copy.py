@@ -86,9 +86,9 @@ def collate_fn(batch: List[Tuple[List[str], int]]) -> Tuple[torch.Tensor, torch.
     max_len = max(len(s) for s in sequences) # Should be constant == self.seq_length
     batch_size = len(batch)
 
-    input_ids = torch.full((batch_size, max_len + 1), pad_idx, dtype=torch.long) # +1 for CLS
-    # key_padding_mask: True where padded, False otherwise.
-    key_padding_mask = torch.ones((batch_size, max_len + 1), dtype=torch.bool)
+    input_ids = torch.full((batch_size, max_len + 1), pad_idx, dtype=torch.long)  # +1 for CLS
+    # attention_mask: 1 where there is a real token (including CLS), 0 where padded
+    attention_mask = torch.zeros((batch_size, max_len + 1), dtype=torch.long)
 
     for i, seq in enumerate(sequences):
         len_s = len(seq)
@@ -96,9 +96,9 @@ def collate_fn(batch: List[Tuple[List[str], int]]) -> Tuple[torch.Tensor, torch.
 
         input_ids[i, 0] = vocab_map[CLS]
         input_ids[i, 1:len_s+1] = torch.tensor(token_ids)
-        key_padding_mask[i, :len_s+1] = False # Mark non-padded tokens as False
+        attention_mask[i, :len_s+1] = 1  # Mark valid tokens
 
-    return input_ids, torch.tensor(labels, dtype=torch.long), key_padding_mask
+    return input_ids, torch.tensor(labels, dtype=torch.long), attention_mask
 
 # --- Main Loader Function ---
 def get_selective_copy_dataloaders(
