@@ -26,7 +26,7 @@ def generate_palindrome_sequence(
     min_payload: int,
     max_payload: int,
     max_init_dist: int,
-    max_trail_dist: int
+    max_trailing_dist: int
 ) -> Tuple[List[str], int]:
     """Generates a sequence for the character palindrome task."""
     payload_len = random.randint(min_payload, max_payload)
