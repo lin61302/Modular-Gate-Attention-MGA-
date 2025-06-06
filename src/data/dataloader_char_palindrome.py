@@ -45,7 +45,7 @@ def generate_palindrome_sequence(
              payload = [random.choice(PAYLOAD_ALPHABET) for _ in range(payload_len)]
 
     num_initial_dist = random.randint(0, max_init_dist)
-    num_trailing_dist = random.randint(0, max_trail_dist)
+    num_trailing_dist = random.randint(0, max_trailing_dist)
 
     # Ensure total length doesn't exceed max_seq_len - 1 (for CLS)
     total_non_distractor = 1 + payload_len + 1 # MarkerA + payload + MarkerB
