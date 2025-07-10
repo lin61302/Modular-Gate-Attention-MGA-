@@ -102,4 +102,8 @@ Gating Analysis: The code logs average gate weights, allowing analysis and showi
 
 (Note: Minor variations in results due to library versions or hardware differences are possible).
 
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
 
